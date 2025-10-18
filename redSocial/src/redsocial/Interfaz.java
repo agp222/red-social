@@ -4,6 +4,14 @@
  */
 package redsocial;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 /**
  *
  * @author Antonio Guzzo
@@ -54,6 +62,11 @@ public class Interfaz extends javax.swing.JFrame {
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 20, -1, -1));
 
         cargarArchivo.setText("Cargar archivo");
+        cargarArchivo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cargarArchivoActionPerformed(evt);
+            }
+        });
         jPanel1.add(cargarArchivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, -1, -1));
 
         jLabel2.setText("Agregar archivo informacion inicial");
@@ -106,6 +119,43 @@ public class Interfaz extends javax.swing.JFrame {
     private void identificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_identificarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_identificarActionPerformed
+
+    private void cargarArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cargarArchivoActionPerformed
+        // Se crea el Objeto JFileChooser
+        JFileChooser fc = new JFileChooser();
+
+        // Se crea el filtro para que solo se acepte TXT
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("*.TXT", "txt");
+
+        // Se le indica el filtro
+        fc.setFileFilter(filtro);
+
+        // Se abre la ventana, y se guarda la op seleccionada por el usuario
+        int seleccion = fc.showOpenDialog(this);
+        
+        // Si el usuario presiona aceptar
+        if (seleccion == JFileChooser.APPROVE_OPTION) {
+            // Selecciono el fichero
+            File fichero = fc.getSelectedFile();
+            String datos = "";
+
+            try (FileReader fr = new FileReader(fichero); BufferedReader br = new BufferedReader(fr)) {
+                StringBuilder cadena = new StringBuilder();
+                String linea;
+                int modo = 0;
+//                while ((linea = br.readLine()) != null) {
+//                    
+//                    
+//                }
+
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        } else {
+            // Muestra un mensaje de error si no se ha escogido un archivo válido.
+            JOptionPane.showMessageDialog(null, "No se escogió un archivo válido");
+        }
+    }//GEN-LAST:event_cargarArchivoActionPerformed
 
     /**
      * @param args the command line arguments
