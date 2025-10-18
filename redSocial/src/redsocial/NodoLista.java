@@ -16,4 +16,6 @@ public class NodoLista {
         this.clave = dato;
         this.sig = siguiente;
     }
+    
+    
 }
