@@ -8,6 +8,11 @@ package redsocial;
  *
  * @author Antonio Guzzo
  */
+
+
+/**
+ * Nodo de una lista de adyacencia para grafos.
+ */
 public class NodoLista {
     public int clave;
     public NodoLista sig;
