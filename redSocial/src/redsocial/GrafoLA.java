@@ -20,4 +20,26 @@ public class GrafoLA {
         this.numVertices = 0;
         this.listaAdy = new Lista[n];
     }
+    
+    public void insertaVertice(int n) {
+        if (n > maxNodos - numVertices) {
+            System.out.println("Error, se supera el número de nodos máximo del grafo");
+        } else {
+            for (int i = numVertices; i < numVertices + n; i++) {
+                listaAdy[i] = new Lista();
+            }
+            numVertices += n;
+        }
+    }
+
+    public void insertaArista(int i, int j) {
+        if (i >= numVertices || j >= numVertices) {
+            System.out.println("Error, vértice no válido");
+            return;
+        }
+        listaAdy[i].insertar(j);
+        if (!dirigido) listaAdy[j].insertar(i);
+    }
+    
+    
 }
