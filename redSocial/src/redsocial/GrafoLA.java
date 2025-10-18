@@ -41,5 +41,18 @@ public class GrafoLA {
         if (!dirigido) listaAdy[j].insertar(i);
     }
     
+    public void eliminaArista(int i, int j) {
+        if (i >= numVertices || j >= numVertices) {
+            System.out.println("Error, vértice no válido");
+            return;
+        }
+        listaAdy[i].eliminar(j);
+        if (!dirigido) listaAdy[j].eliminar(i);
+    }
+    
+    public boolean existeArista(int i, int j) {
+        return listaAdy[i].busqueda(j);
+    }
+    
     
 }
