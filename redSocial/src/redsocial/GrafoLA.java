@@ -96,34 +96,40 @@ public class GrafoLA {
     }
     
     public String eliminarVertice(String nombre) {
-    int indice = buscarIndice(nombre);
-    if (indice == -1) {
-        System.out.println("Error: el vértice no existe.");
-        return "";
-    }
-
-    //Eliminar todas las aristas que llegan al vértice
-    for (int i = 0; i < numVertices; i++) {
-        if (listaAdy[i] != null) {
-            listaAdy[i].eliminar(nombre);
+        int indice = buscarIndice(nombre);
+        if (indice == -1) {
+            System.out.println("Error: el vértice no existe.");
+            return "";
         }
+
+        //Eliminar todas las aristas que llegan al vértice
+        for (int i = 0; i < numVertices; i++) {
+            if (listaAdy[i] != null) {
+                listaAdy[i].eliminar(nombre);
+            }
+        }
+
+        //Eliminar la lista de adyacencia del vértice (aristas que salen)
+        listaAdy[indice] = null;
+
+        //Desplazar los nombres y listas para compactar el arreglo
+        for (int i = indice; i < numVertices - 1; i++) {
+            nombres[i] = nombres[i + 1];
+            listaAdy[i] = listaAdy[i + 1];
+        }
+
+        //Vaciar la última posición (ahora libre)
+        nombres[numVertices - 1] = null;
+        listaAdy[numVertices - 1] = null;
+
+        numVertices--;
+
+        return("Vértice " + nombre + " eliminado correctamente.");
     }
-
-    //Eliminar la lista de adyacencia del vértice (aristas que salen)
-    listaAdy[indice] = null;
-
-    //Desplazar los nombres y listas para compactar el arreglo
-    for (int i = indice; i < numVertices - 1; i++) {
-        nombres[i] = nombres[i + 1];
-        listaAdy[i] = listaAdy[i + 1];
+    
+    public String[] obtenerVecinos(String usuario) {
+        int i = buscarIndice(usuario);
+        if (i == -1) return new String[0];
+        return listaAdy[i].obtenerElementos();
     }
-
-    //Vaciar la última posición (ahora libre)
-    nombres[numVertices - 1] = null;
-    listaAdy[numVertices - 1] = null;
-
-    numVertices--;
-
-    return("Vértice " + nombre + " eliminado correctamente.");
-}
 }

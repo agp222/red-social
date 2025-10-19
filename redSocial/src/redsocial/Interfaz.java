@@ -5,8 +5,10 @@
 package redsocial;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -92,6 +94,11 @@ public class Interfaz extends javax.swing.JFrame {
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 110, -1, -1));
 
         actualizar.setText("Actualizar repositorio");
+        actualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                actualizarActionPerformed(evt);
+            }
+        });
         jPanel1.add(actualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 70, -1, -1));
 
         eliminar.setText("Eliminar");
@@ -278,6 +285,63 @@ public class Interfaz extends javax.swing.JFrame {
         this.inputAgregar.setText("");
         JOptionPane.showMessageDialog(null, "Usuario agregado con exito");
     }//GEN-LAST:event_agregarActionPerformed
+
+    private void actualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actualizarActionPerformed
+        if (grafo == null){
+            JOptionPane.showMessageDialog(null, "Cargue un archivo primero");
+            return;
+        }
+        
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Guardar grafo como archivo de texto");
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos de texto (*.txt)", "txt");
+        fileChooser.setFileFilter(filter);
+
+        int seleccion = fileChooser.showSaveDialog(this);
+        if (seleccion == JFileChooser.APPROVE_OPTION) {
+            File archivo = fileChooser.getSelectedFile();
+            // Asegurar extensión .txt
+            if (!archivo.getName().toLowerCase().endsWith(".txt")) {
+                archivo = new File(archivo.getAbsolutePath() + ".txt");
+            }
+
+            try (FileWriter fw = new FileWriter(archivo);
+                 BufferedWriter bw = new BufferedWriter(fw)) {
+
+                // --- Escribir la sección de usuarios ---
+                bw.write("usuarios");
+                bw.newLine();
+                for (int i = 0; i < grafo.getNumVertices(); i++) {
+                    String nombre = grafo.getNombres()[i];
+                    bw.write(nombre);
+                    bw.newLine();
+                }
+
+                // --- Escribir la sección de relaciones ---
+                bw.write("relaciones");
+                bw.newLine();
+
+                for (int i = 0; i < grafo.getNumVertices(); i++) {
+                    String origen = grafo.getNombres()[i];
+                    String[] vecinos = grafo.obtenerVecinos(origen);
+                    for (int j = 0; j < vecinos.length; j++) {
+                        bw.write(origen + ", " + vecinos[j]);
+                        bw.newLine();
+                    }
+                }
+
+                bw.flush();
+                JOptionPane.showMessageDialog(this,
+                    "Archivo guardado correctamente:\n" + archivo.getAbsolutePath(),
+                    "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(this,
+                    "Error al guardar el archivo:\n" + ex.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_actualizarActionPerformed
 
     /**
      * @param args the command line arguments
