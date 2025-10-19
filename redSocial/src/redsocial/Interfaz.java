@@ -53,7 +53,7 @@ public class Interfaz extends javax.swing.JFrame {
         inputAgregar = new javax.swing.JTextField();
         agregar = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
-        inputEliminar1 = new javax.swing.JTextField();
+        inputEliminar = new javax.swing.JTextField();
         usuario1 = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         enlazar = new javax.swing.JButton();
@@ -95,6 +95,11 @@ public class Interfaz extends javax.swing.JFrame {
         jPanel1.add(actualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 70, -1, -1));
 
         eliminar.setText("Eliminar");
+        eliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eliminarActionPerformed(evt);
+            }
+        });
         jPanel1.add(eliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 250, -1, -1));
 
         jLabel4.setText("Eliminar usuario");
@@ -103,11 +108,16 @@ public class Interfaz extends javax.swing.JFrame {
         jPanel1.add(inputAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 250, 100, -1));
 
         agregar.setText("agregar");
+        agregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                agregarActionPerformed(evt);
+            }
+        });
         jPanel1.add(agregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 250, -1, -1));
 
         jLabel5.setText("Agregar usuario");
         jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 220, -1, -1));
-        jPanel1.add(inputEliminar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 250, 100, -1));
+        jPanel1.add(inputEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 250, 100, -1));
         jPanel1.add(usuario1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 340, 110, -1));
 
         jLabel6.setText("Agregar relacion");
@@ -222,6 +232,39 @@ public class Interfaz extends javax.swing.JFrame {
         grafo.mostrar();
     }//GEN-LAST:event_enlazarActionPerformed
 
+    private void eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarActionPerformed
+        if (grafo == null){
+            JOptionPane.showMessageDialog(null, "Cargue un archivo primero");
+            return;
+        }
+        
+        String user = this.inputEliminar.getText().toLowerCase();
+
+        if (user.length() < 2) {
+            JOptionPane.showMessageDialog(null, "los inputs deben tener al menos 2 letras");
+            return;
+        }
+        
+        String respuesta = grafo.eliminarVertice(user);
+        this.inputEliminar.setText("");
+        JOptionPane.showMessageDialog(null, respuesta);
+        //grafo.mostrar();
+    }//GEN-LAST:event_eliminarActionPerformed
+
+    private void agregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarActionPerformed
+        if (grafo == null){
+            JOptionPane.showMessageDialog(null, "Cargue un archivo primero");
+            return;
+        }
+        
+        String user = this.inputEliminar.getText().toLowerCase();
+
+        if (user.length() < 2) {
+            JOptionPane.showMessageDialog(null, "los inputs deben tener al menos 2 letras");
+            return;
+        }
+    }//GEN-LAST:event_agregarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -265,7 +308,7 @@ public class Interfaz extends javax.swing.JFrame {
     private javax.swing.JButton enlazar;
     private javax.swing.JButton identificar;
     private javax.swing.JTextField inputAgregar;
-    private javax.swing.JTextField inputEliminar1;
+    private javax.swing.JTextField inputEliminar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
