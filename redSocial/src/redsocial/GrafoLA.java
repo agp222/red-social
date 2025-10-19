@@ -26,14 +26,28 @@ public class GrafoLA {
     public int getNumVertices() { return numVertices; }
     
     public void insertarVertice(String nombre) {
+        // Si se alcanza el límite, duplicar la capacidad
         if (numVertices >= maxNodos) {
-            System.out.println("No se pueden agregar más vértices.");
-            return;
+            int nuevaCapacidad = maxNodos * 2;
+            Lista[] nuevaLista = new Lista[nuevaCapacidad];
+            String[] nuevosNombres = new String[nuevaCapacidad];
+
+            // Copiar elementos actuales
+            for (int i = 0; i < numVertices; i++) {
+                nuevaLista[i] = listaAdy[i];
+                nuevosNombres[i] = nombres[i];
+            }
+
+            listaAdy = nuevaLista;
+            nombres = nuevosNombres;
+            maxNodos = nuevaCapacidad;
         }
+
         nombres[numVertices] = nombre;
         listaAdy[numVertices] = new Lista();
         numVertices++;
     }
+
 
     public void insertarArista(String origen, String destino) {
         int i = buscarIndice(origen);

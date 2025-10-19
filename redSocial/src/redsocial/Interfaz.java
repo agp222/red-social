@@ -263,6 +263,8 @@ public class Interfaz extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "los inputs deben tener al menos 2 letras");
             return;
         }
+        
+        grafo.insertarVertice(user);
     }//GEN-LAST:event_agregarActionPerformed
 
     /**
