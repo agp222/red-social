@@ -257,14 +257,26 @@ public class Interfaz extends javax.swing.JFrame {
             return;
         }
         
-        String user = this.inputEliminar.getText().toLowerCase();
+        String user = this.inputAgregar.getText().toLowerCase();
 
         if (user.length() < 2) {
             JOptionPane.showMessageDialog(null, "los inputs deben tener al menos 2 letras");
             return;
         }
         
+        String[] existentes = grafo.getNombres();
+        for (int i = 0; i < existentes.length; i++) {
+            if (existentes[i].equals(user)) {
+                JOptionPane.showMessageDialog(this,
+                    "El usuario \"" + user + "\" ya existe en el grafo.",
+                    "Duplicado", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+        }
+        
         grafo.insertarVertice(user);
+        this.inputAgregar.setText("");
+        JOptionPane.showMessageDialog(null, "Usuario agregado con exito");
     }//GEN-LAST:event_agregarActionPerformed
 
     /**

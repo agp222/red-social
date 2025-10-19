@@ -24,6 +24,7 @@ public class GrafoLA {
     }
     
     public int getNumVertices() { return numVertices; }
+    public String[] getNombres() { return nombres;}
     
     public void insertarVertice(String nombre) {
         // Si se alcanza el límite, duplicar la capacidad
