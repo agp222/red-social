@@ -8,9 +8,12 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import redsocial.GrafoLA;
 
 /**
  *
@@ -21,6 +24,8 @@ public class Interfaz extends javax.swing.JFrame {
     /**
      * Creates new form Interfaz
      */
+    GrafoLA grafo;
+
     public Interfaz() {
         initComponents();
     }
@@ -143,11 +148,42 @@ public class Interfaz extends javax.swing.JFrame {
                 StringBuilder cadena = new StringBuilder();
                 String linea;
                 int modo = 0;
-//                while ((linea = br.readLine()) != null) {
-//                    
-//                    
-//                }
+                String usuarios="";
 
+                while ((linea = br.readLine()) != null) {
+                    linea = linea.trim();
+                    if (linea.isEmpty()) continue;
+                    
+                    if (linea.equalsIgnoreCase("usuarios")) {
+                        modo = 1;
+                        continue;
+                    } else if (linea.equalsIgnoreCase("relaciones")) {
+                        if (usuarios.endsWith(",")) {
+                            usuarios = usuarios.substring(0, usuarios.length() - 1);
+                        }
+                        String[] user = usuarios.split(",");
+
+                        grafo = new GrafoLA(user.length, true);
+
+                        for (int i = 0; i < user.length; i++) {
+                            grafo.insertarVertice(user[i]);
+                        }
+
+                        modo = 2;
+                        continue;
+                    }
+                    
+                    if (modo == 1) {
+                        // Línea de usuarios
+                        usuarios += linea+",";
+                    }
+                    if (modo == 2) {
+                        String[] partes = linea.split(",");
+                        if (partes.length == 2) {
+                            grafo.insertarArista(partes[0].trim(), partes[1].trim());
+                        }
+                    }
+                }
             } catch (IOException e1) {
                 e1.printStackTrace();
             }

@@ -13,45 +13,58 @@ public class GrafoLA {
     private int maxNodos;
     private int numVertices;
     private Lista[] listaAdy;
+    private String[] nombres;
 
     public GrafoLA(int n, boolean d) {
         this.dirigido = d;
         this.maxNodos = n;
         this.numVertices = 0;
         this.listaAdy = new Lista[n];
+        this.nombres = new String[n];
     }
     
-    public void insertaVertice(int n) {
-        if (n > maxNodos - numVertices) {
-            System.out.println("Error, se supera el número de nodos máximo del grafo");
-        } else {
-            for (int i = numVertices; i < numVertices + n; i++) {
-                listaAdy[i] = new Lista();
-            }
-            numVertices += n;
+    public void insertarVertice(String nombre) {
+        if (numVertices >= maxNodos) {
+            System.out.println("No se pueden agregar más vértices.");
+            return;
         }
+        nombres[numVertices] = nombre;
+        listaAdy[numVertices] = new Lista();
+        numVertices++;
     }
 
-    public void insertaArista(int i, int j) {
-        if (i >= numVertices || j >= numVertices) {
-            System.out.println("Error, vértice no válido");
+    public void insertarArista(String origen, String destino) {
+        int i = buscarIndice(origen);
+        int j = buscarIndice(destino);
+        if (i == -1 || j == -1) {
+            System.out.println("Error: vértice no encontrado.");
             return;
         }
-        listaAdy[i].insertar(j);
-        if (!dirigido) listaAdy[j].insertar(i);
-    }
-    
-    public void eliminaArista(int i, int j) {
-        if (i >= numVertices || j >= numVertices) {
-            System.out.println("Error, vértice no válido");
-            return;
+        listaAdy[i].insertar(destino);
+        if (!dirigido) {
+            listaAdy[j].insertar(origen);
         }
-        listaAdy[i].eliminar(j);
-        if (!dirigido) listaAdy[j].eliminar(i);
     }
     
-    public boolean existeArista(int i, int j) {
-        return listaAdy[i].busqueda(j);
+     public void eliminarArista(String origen, String destino) {
+        int i = buscarIndice(origen);
+        int j = buscarIndice(destino);
+        if (i == -1 || j == -1) return;
+        listaAdy[i].eliminar(destino);
+        if (!dirigido) listaAdy[j].eliminar(origen);
+    }
+    
+    public boolean existeArista(String origen, String destino) {
+        int i = buscarIndice(origen);
+        if (i == -1) return false;
+        return listaAdy[i].busqueda(destino);
+    }
+    
+    private int buscarIndice(String nombre) {
+        for (int i = 0; i < numVertices; i++) {
+            if (nombres[i].equals(nombre)) return i;
+        }
+        return -1;
     }
     
     

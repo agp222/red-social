@@ -23,48 +23,48 @@ public class Lista {
     /**
      * Inserta un nuevo nodo al inicio de la lista con la clave especificada.
      *
-     * @param x valor entero que se insertará como clave en el nuevo nodo.
+     * @param x valor string que se insertará como clave en el nuevo nodo.
      */
-    public void insertar(int x) {
-        inicio = new NodoLista(x, inicio);
+    public void insertar(String x) {
+        if (!busqueda(x)) {
+            inicio = new NodoLista(x, inicio);
+        }
     }
 
      /**
      * Elimina el primer nodo de la lista cuya clave sea igual al valor especificado.
      * Si la clave no existe en la lista, no se realiza ninguna modificación.
      *
-     * @param x valor entero de la clave del nodo que se desea eliminar.
+     * @param x valor string de la clave del nodo que se desea eliminar.
      */
-    public void eliminar(int x) {
+    public void eliminar(String x) {
         NodoLista actual = inicio, anterior = null;
-        while (actual != null && actual.clave != x) {
+        while (actual != null && !actual.dato.equals(x)) {
             anterior = actual;
-            actual = actual.sig;
+            actual = actual.siguiente;
         }
         if (actual != null) {
-            if (anterior == null) {
-                inicio = actual.sig;
-            } else {
-                anterior.sig = actual.sig;
-            }
+            if (anterior == null) inicio = actual.siguiente;
+            else anterior.siguiente = actual.siguiente;
         }
     }
 
     /**
      * Busca un nodo en la lista cuya clave sea igual al valor especificado.
      *
-     * @param x valor entero que se desea buscar en la lista.
+     * @param x valor string que se desea buscar en la lista.
      * @return {@code true} si la clave existe en la lista; {@code false} en caso contrario.
      */
-    public boolean busqueda(int x) {
+    public boolean busqueda(String x) {
         NodoLista actual = inicio;
         while (actual != null) {
-            if (actual.clave == x) return true;
-            actual = actual.sig;
+            if (actual.dato.equals(x)) return true;
+            actual = actual.siguiente;
         }
         return false;
     }
-
+    
+    
     /**
      * Devuelve una referencia al primer nodo de la lista.
      *
@@ -72,5 +72,40 @@ public class Lista {
      */
     public NodoLista obtenerInicio() {
         return inicio;
+    }
+    
+    /** 
+     * Devuelve todos los elementos como un arreglo de String 
+     */
+    public String[] obtenerElementos() {
+        // Primero contar
+        int count = 0;
+        NodoLista actual = inicio;
+        while (actual != null) {
+            count++;
+            actual = actual.siguiente;
+        }
+        // Crear arreglo
+        String[] elementos = new String[count];
+        actual = inicio;
+        int i = 0;
+        while (actual != null) {
+            elementos[i++] = actual.dato;
+            actual = actual.siguiente;
+        }
+        return elementos;
+    }
+    
+    /** 
+     * Devuelve la cantidad de elementos en la lista 
+     */
+    public int cantidad() {
+        int c = 0;
+        NodoLista actual = inicio;
+        while (actual != null) {
+            c++;
+            actual = actual.siguiente;
+        }
+        return c;
     }
 }

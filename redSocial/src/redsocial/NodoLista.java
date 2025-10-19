@@ -11,16 +11,15 @@ package redsocial;
 
 
 /**
- * Nodo de una lista de adyacencia para grafos.
+ * Nodo simple enlazado para lista de adyacencia.
+ * Guarda un dato tipo String (nombre de usuario).
  */
 public class NodoLista {
-    public int clave;
-    public NodoLista sig;
+    public String dato;
+    public NodoLista siguiente;
 
-    public NodoLista(int dato, NodoLista siguiente) {
-        this.clave = dato;
-        this.sig = siguiente;
+    public NodoLista(String x, NodoLista s) {
+        dato = x;
+        siguiente = s;
     }
-    
-    
 }
