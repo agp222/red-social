@@ -23,9 +23,26 @@ public class GrafoLA {
         this.nombres = new String[n];
     }
     
+    /**
+     * Obtiene el número actual de vértices en el grafo.
+     *
+     * @return El número de vértices.
+     */
     public int getNumVertices() { return numVertices; }
+    
+    /**
+     * Obtiene el arreglo de nombres de los vértices.
+     *
+     * @return El arreglo de Strings con los nombres de los vértices.
+     */
     public String[] getNombres() { return nombres;}
     
+    /**
+     * Inserta un nuevo vértice al grafo con el nombre especificado.
+     * Si el grafo alcanza su capacidad máxima, esta se duplica automáticamente.
+     *
+     * @param nombre El nombre (String) del nuevo vértice a insertar.
+     */
     public void insertarVertice(String nombre) {
         // Si se alcanza el límite, duplicar la capacidad
         if (numVertices >= maxNodos) {
@@ -49,7 +66,13 @@ public class GrafoLA {
         numVertices++;
     }
 
-
+    /**
+     * Inserta una arista (relación) entre dos vértices.
+     * Si el grafo es no dirigido, se inserta una arista bidireccional.
+     *
+     * @param origen El nombre del vértice de origen.
+     * @param destino El nombre del vértice de destino.
+     */
     public void insertarArista(String origen, String destino) {
         int i = buscarIndice(origen);
         int j = buscarIndice(destino);
@@ -63,7 +86,14 @@ public class GrafoLA {
         }
     }
     
-     public void eliminarArista(String origen, String destino) {
+    /**
+     * Elimina una arista (relación) entre dos vértices.
+     * Si el grafo es no dirigido, se elimina la arista bidireccional.
+     *
+     * @param origen El nombre del vértice de origen.
+     * @param destino El nombre del vértice de destino.
+     */
+    public void eliminarArista(String origen, String destino) {
         int i = buscarIndice(origen);
         int j = buscarIndice(destino);
         if (i == -1 || j == -1) return;
@@ -71,12 +101,26 @@ public class GrafoLA {
         if (!dirigido) listaAdy[j].eliminar(origen);
     }
     
+    /**
+     * Verifica si existe una arista dirigida desde el vértice de origen al de destino.
+     *
+     * @param origen El nombre del vértice de origen.
+     * @param destino El nombre del vértice de destino.
+     * @return {@code true} si la arista existe, {@code false} en caso contrario.
+     */
     public boolean existeArista(String origen, String destino) {
         int i = buscarIndice(origen);
         if (i == -1) return false;
         return listaAdy[i].busqueda(destino);
     }
     
+    /**
+     * Busca el índice (posición en los arreglos internos) de un vértice dado su nombre.
+     * La búsqueda es sensible a mayúsculas y minúsculas.
+     *
+     * @param nombre El nombre del vértice a buscar.
+     * @return El índice del vértice, o -1 si no se encuentra.
+     */
     private int buscarIndice(String nombre) {
         for (int i = 0; i < numVertices; i++) {
             if (nombres[i].equals(nombre)) return i;
@@ -84,6 +128,10 @@ public class GrafoLA {
         return -1;
     }
     
+    /**
+     * Muestra por consola la lista de adyacencia completa del grafo,
+     * imprimiendo cada vértice y sus respectivos vecinos.
+     */
     public void mostrar() {
         for (int i = 0; i < numVertices; i++) {
             System.out.print(nombres[i] + " -> ");
@@ -95,6 +143,12 @@ public class GrafoLA {
         }
     }
     
+    /**Elimina un vértice del grafo dado su nombre, junto con todas las aristas
+     * que inciden (llegan) o salen de él.
+     *
+     * @param nombre El nombre del vértice a eliminar.
+     * @return Un mensaje de confirmación o error.
+     */
     public String eliminarVertice(String nombre) {
         int indice = buscarIndice(nombre);
         if (indice == -1) {
@@ -127,6 +181,12 @@ public class GrafoLA {
         return("Vértice " + nombre + " eliminado correctamente.");
     }
     
+    /**
+     * Obtiene un arreglo con los nombres de todos los vértices vecinos (adyacentes)V de un vértice dado.
+     *
+     * @param usuario El nombre del vértice del cual se quieren obtener los vecinos.
+     * @return Un arreglo de Strings con los nombres de los vecinos, o un arreglo vacío si el vértice no existe.
+     */
     public String[] obtenerVecinos(String usuario) {
         int i = buscarIndice(usuario);
         if (i == -1) return new String[0];
