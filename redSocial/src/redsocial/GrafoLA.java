@@ -23,6 +23,8 @@ public class GrafoLA {
         this.nombres = new String[n];
     }
     
+    public int getNumVertices() { return numVertices; }
+    
     public void insertarVertice(String nombre) {
         if (numVertices >= maxNodos) {
             System.out.println("No se pueden agregar más vértices.");
@@ -67,5 +69,14 @@ public class GrafoLA {
         return -1;
     }
     
-    
+    public void mostrar() {
+        for (int i = 0; i < numVertices; i++) {
+            System.out.print(nombres[i] + " -> ");
+            String[] vecinos = listaAdy[i].obtenerElementos();
+            for (int j = 0; j < vecinos.length; j++) {
+                System.out.print(vecinos[j] + (j < vecinos.length - 1 ? ", " : ""));
+            }
+            System.out.println();
+        }
+    }
 }

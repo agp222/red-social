@@ -114,6 +114,11 @@ public class Interfaz extends javax.swing.JFrame {
         jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 310, -1, -1));
 
         enlazar.setText("Enlazar");
+        enlazar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                enlazarActionPerformed(evt);
+            }
+        });
         jPanel1.add(enlazar, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 370, -1, -1));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 470, 460));
@@ -191,7 +196,31 @@ public class Interfaz extends javax.swing.JFrame {
             // Muestra un mensaje de error si no se ha escogido un archivo válido.
             JOptionPane.showMessageDialog(null, "No se escogió un archivo válido");
         }
+        
+        grafo.mostrar();
     }//GEN-LAST:event_cargarArchivoActionPerformed
+
+    private void enlazarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enlazarActionPerformed
+        if (grafo == null){
+            JOptionPane.showMessageDialog(null, "Cargue un archivo primero");
+            return;
+        }
+        
+        String user1 = this.usuario1.getText().toLowerCase();
+        String user2 = this.usuario2.getText().toLowerCase();
+
+        if (user1.length() < 2 || user2.length() < 2) {
+            JOptionPane.showMessageDialog(null, "los inputs deben tener al menos 2 letras");
+            return;
+        }
+        
+        grafo.insertarArista(user1, user2);
+        
+        this.usuario1.setText("");
+        this.usuario2.setText("");
+        
+        grafo.mostrar();
+    }//GEN-LAST:event_enlazarActionPerformed
 
     /**
      * @param args the command line arguments
