@@ -196,4 +196,97 @@ public class GrafoLA {
         if (i == -1) return new String[0];
         return listaAdy[i].obtenerElementos();
     }
+    
+    
+    /**
+    * Identifica y muestra los Componentes Fuertemente Conectados (CFC) del grafo dirigido usando el algoritmo de Kosaraju.
+    * 
+    */
+    public void encontrarComponentesFuertementeConectados() {
+        boolean[] visitado = new boolean[numVertices];
+        String[] pila = new String[numVertices];
+        int[] tope = new int[1];
+
+        // Primer DFS: llena pila según el tiempo de finalización
+        for (int i = 0; i < numVertices; i++) {
+            if (!visitado[i]) {
+                dfs1(i, visitado, pila, tope);
+            }
+        }
+
+        //Transponer el grafo
+        GrafoLA transpuesto = this.transponer();
+
+        //Segundo DFS: recorrer según orden inverso
+        for (int i = 0; i < numVertices; i++) {
+            visitado[i] = false;
+        }
+
+        String[] colores = {"Rojo", "Verde", "Azul", "Amarillo", "Cian", "Magenta", "Gris", "Naranja", "Violeta"};
+        int componenteId = 0;
+
+        System.out.println("\nComponentes Fuertemente Conectados:");
+        while (tope[0] > 0) {
+            String nombreVertice = pila[--tope[0]];
+            int indice = transpuesto.buscarIndice(nombreVertice);
+            if (!visitado[indice]) {
+                System.out.print("CFC #" + (componenteId + 1) + " (" + colores[componenteId % colores.length] + "): ");
+                transpuesto.dfs2(indice, visitado);
+                System.out.println();
+                componenteId++;
+            }
+        }
+    }
+
+    /**
+     * DFS de la primera pasada: llena la pila según finalización.
+     */
+    private void dfs1(int v, boolean[] visitado, String[] pila, int[] tope) {
+        visitado[v] = true;
+        String[] vecinos = listaAdy[v].obtenerElementos();
+        for (int i = 0; i < vecinos.length; i++) {
+            int j = buscarIndice(vecinos[i]);
+            if (j != -1 && !visitado[j]) {
+                dfs1(j, visitado, pila, tope);
+            }
+        }
+        // guarda vértice al terminar
+        pila[tope[0]++] = nombres[v]; 
+    }
+
+    /**
+     * DFS de la segunda pasada: imprime vértices del mismo componente.
+     */
+    private void dfs2(int v, boolean[] visitado) {
+        visitado[v] = true;
+        System.out.print(nombres[v] + " ");
+        String[] vecinos = listaAdy[v].obtenerElementos();
+        for (int i = 0; i < vecinos.length; i++) {
+            int j = buscarIndice(vecinos[i]);
+            if (j != -1 && !visitado[j]) {
+                dfs2(j, visitado);
+            }
+        }
+    }
+
+    /**
+     * Crea y devuelve un nuevo grafo con todas las aristas invertidas.
+     */
+    private GrafoLA transponer() {
+        GrafoLA gT = new GrafoLA(numVertices, true);
+        // Copiar vértices
+        for (int i = 0; i < numVertices; i++) {
+            gT.insertarVertice(nombres[i]);
+        }
+        // Invertir aristas
+        for (int i = 0; i < numVertices; i++) {
+            String origen = nombres[i];
+            String[] vecinos = listaAdy[i].obtenerElementos();
+            for (int j = 0; j < vecinos.length; j++) {
+                gT.insertarArista(vecinos[j], origen);
+            }
+        }
+        return gT;
+    }
+    
 }

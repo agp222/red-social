@@ -160,6 +160,8 @@ public class Interfaz extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Cargue un archivo primero");
             return;
         }
+        
+        grafo.encontrarComponentesFuertementeConectados();
     }//GEN-LAST:event_identificarActionPerformed
     
     
@@ -225,6 +227,8 @@ public class Interfaz extends javax.swing.JFrame {
                             grafo.insertarArista(partes[0].trim(), partes[1].trim());
                         }
                     }
+                    
+                    
                 }
             } catch (IOException e1) {
                 e1.printStackTrace();
@@ -233,7 +237,7 @@ public class Interfaz extends javax.swing.JFrame {
             // Muestra un mensaje de error si no se ha escogido un archivo válido.
             JOptionPane.showMessageDialog(null, "No se escogió un archivo válido");
         }
-        
+        JOptionPane.showMessageDialog(null, "Grafo cargado");
         grafo.mostrar();
     }//GEN-LAST:event_cargarArchivoActionPerformed
     
