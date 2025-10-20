@@ -365,7 +365,9 @@ public class Interfaz extends javax.swing.JFrame {
         Graph graph = new SingleGraph("RedSocial");
         
         
-        graph.setAttribute("ui.stylesheet");
+        String styleSheet = "node {size: 25px; fill-color: #66A; text-mode: normal; text-alignment: center; text-color: white; text-size: 11px; text-background-mode: rounded-box; text-background-color: #444; text-padding: 3px, 2px; text-offset: 0px, -15px;}"+
+                "edge {fill-color: #777; arrow-shape: arrow; arrow-size: 8px, 4px; text-mode: normal;}";
+        graph.setAttribute("ui.stylesheet", styleSheet);
 
         String[] nombres = grafo.getNombres();
         
