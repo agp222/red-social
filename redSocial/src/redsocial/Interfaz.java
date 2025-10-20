@@ -17,6 +17,11 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import redsocial.GrafoLA;
 
+
+import org.graphstream.graph.Graph;
+import org.graphstream.graph.implementations.SingleGraph;
+import org.graphstream.ui.view.Viewer;
+
 /**
  *
  * @author Antonio Guzzo
@@ -80,6 +85,11 @@ public class Interfaz extends javax.swing.JFrame {
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 50, -1, -1));
 
         mostrarGrafo.setText("Mostrar grafo");
+        mostrarGrafo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mostrarGrafoActionPerformed(evt);
+            }
+        });
         jPanel1.add(mostrarGrafo, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 130, -1, -1));
 
         identificar.setText("Identificar");
@@ -342,6 +352,44 @@ public class Interfaz extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_actualizarActionPerformed
+
+    private void mostrarGrafoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mostrarGrafoActionPerformed
+        if (grafo == null) {
+            JOptionPane.showMessageDialog(null, "Cargue un archivo primero");
+            return;
+        }
+        
+        
+        System.setProperty("org.graphstream.ui", "swing"); 
+
+        Graph graph = new SingleGraph("RedSocial");
+        
+        
+        graph.setAttribute("ui.stylesheet");
+
+        String[] nombres = grafo.getNombres();
+        
+        // Añadir Nodos
+        for (int i = 0; i < grafo.getNumVertices(); i++) {
+            String nombre = nombres[i];
+            graph.addNode(nombre).setAttribute("ui.label", nombre); // El nombre es el ID y la etiqueta
+        }
+
+        // Añadir Aristas
+        int edgeCount = 0;
+        for (int i = 0; i < grafo.getNumVertices(); i++) {
+            String origen = nombres[i];
+            String[] vecinos = grafo.obtenerVecinos(origen); // Usa tu método de GrafoLA
+            
+            for (String destino : vecinos) {
+                String edgeId = origen + "->" + destino + "_" + edgeCount++;
+                // true: Indica que la arista es dirigida
+                graph.addEdge(edgeId, origen, destino, true); 
+            }
+        }
+        
+        graph.display();
+    }//GEN-LAST:event_mostrarGrafoActionPerformed
 
     /**
      * @param args the command line arguments
