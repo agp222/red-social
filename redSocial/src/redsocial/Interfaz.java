@@ -161,6 +161,7 @@ public class Interfaz extends javax.swing.JFrame {
             return;
         }
         
+        System.setProperty("org.graphstream.ui", "swing");
         grafo.encontrarComponentesFuertementeConectados();
     }//GEN-LAST:event_identificarActionPerformed
     

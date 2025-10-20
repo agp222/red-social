@@ -4,6 +4,10 @@
  */
 package redsocial;
 
+import org.graphstream.graph.Graph;
+import org.graphstream.graph.Node;
+import org.graphstream.graph.implementations.SingleGraph;
+
 /**
  *
  * @author Antonio Guzzo
@@ -207,36 +211,79 @@ public class GrafoLA {
         String[] pila = new String[numVertices];
         int[] tope = new int[1];
 
-        // Primer DFS: llena pila según el tiempo de finalización
+        // Paso 1: DFS inicial para llenar la pila
         for (int i = 0; i < numVertices; i++) {
             if (!visitado[i]) {
                 dfs1(i, visitado, pila, tope);
             }
         }
 
-        //Transponer el grafo
+        // Paso 2: Transponer
         GrafoLA transpuesto = this.transponer();
+        for (int i = 0; i < numVertices; i++) visitado[i] = false;
 
-        //Segundo DFS: recorrer según orden inverso
-        for (int i = 0; i < numVertices; i++) {
-            visitado[i] = false;
-        }
-
-        String[] colores = {"Rojo", "Verde", "Azul", "Amarillo", "Cian", "Magenta", "Gris", "Naranja", "Violeta"};
+        // Paso 3: Detectar componentes
         int componenteId = 0;
+        int[] colorAsignado = new int[numVertices];
+        for (int i = 0; i < numVertices; i++) colorAsignado[i] = -1;
 
-        System.out.println("\nComponentes Fuertemente Conectados:");
         while (tope[0] > 0) {
             String nombreVertice = pila[--tope[0]];
             int indice = transpuesto.buscarIndice(nombreVertice);
             if (!visitado[indice]) {
-                System.out.print("CFC #" + (componenteId + 1) + " (" + colores[componenteId % colores.length] + "): ");
-                transpuesto.dfs2(indice, visitado);
-                System.out.println();
+                transpuesto.marcarComponente(indice, visitado, componenteId, colorAsignado);
                 componenteId++;
             }
         }
+
+        // Crear grafo GraphStream
+        Graph g = new SingleGraph("Componentes Fuertemente Conectados");
+        String[] colores = {
+            "red", "green", "blue", "orange", "purple", "cyan", "magenta", "brown", "gray"
+        };
+
+        // Añadir nodos
+        for (int i = 0; i < numVertices; i++) {
+            Node n = g.addNode(nombres[i]);
+            n.setAttribute("ui.label", nombres[i]);
+            String color = colores[colorAsignado[i] % colores.length];
+            n.setAttribute("ui.style", "fill-color: " + color + "; size: 25px;");
+        }
+
+        // Añadir aristas
+        for (int i = 0; i < numVertices; i++) {
+            String origen = nombres[i];
+            String[] vecinos = listaAdy[i].obtenerElementos();
+            for (String destino : vecinos) {
+                String id = origen + "->" + destino;
+                if (g.getEdge(id) == null)
+                    g.addEdge(id, origen, destino, true);
+            }
+        }
+        
+        String styleSheet = "node {size: 25px; fill-color: grey; text-mode: normal; text-alignment: center; text-color: white; text-size: 11px; text-background-mode: rounded-box; text-background-color: #444; text-padding: 3px, 2px; text-offset: 0px, -15px;} edge {fill-color: #777; arrow-shape: arrow; arrow-size: 8px, 4px; text-mode: normal;}";
+
+        // Estilo general
+        g.setAttribute("ui.stylesheet",styleSheet);
+
+        // Mostrar
+        g.display();
     }
+    
+    /**
+    * Marca los nodos de un mismo componente fuertemente conectado.
+    */
+   private void marcarComponente(int v, boolean[] visitado, int componenteId, int[] colorAsignado) {
+       visitado[v] = true;
+       colorAsignado[v] = componenteId;
+       String[] vecinos = listaAdy[v].obtenerElementos();
+       for (String vecino : vecinos) {
+           int j = buscarIndice(vecino);
+           if (j != -1 && !visitado[j]) {
+               marcarComponente(j, visitado, componenteId, colorAsignado);
+           }
+       }
+   }
 
     /**
      * DFS de la primera pasada: llena la pila según finalización.
