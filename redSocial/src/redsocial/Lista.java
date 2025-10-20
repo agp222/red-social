@@ -16,6 +16,9 @@ package redsocial;
 public class Lista {
     public NodoLista inicio;
 
+    /**
+     * Constructor por defecto que inicializa una lista vacía.
+     */
     public Lista() {
         inicio = null;
     }
@@ -23,7 +26,7 @@ public class Lista {
     /**
      * Inserta un nuevo nodo al inicio de la lista con la clave especificada.
      *
-     * @param x valor string que se insertará como clave en el nuevo nodo.
+     * @param x Nombre de usuario que se insertará como clave en el nuevo nodo.
      */
     public void insertar(String x) {
         if (!busqueda(x)) {
@@ -35,7 +38,7 @@ public class Lista {
      * Elimina el primer nodo de la lista cuya clave sea igual al valor especificado.
      * Si la clave no existe en la lista, no se realiza ninguna modificación.
      *
-     * @param x valor string de la clave del nodo que se desea eliminar.
+     * @param x Nombre de usuario que se desea eliminar.
      */
     public void eliminar(String x) {
         NodoLista actual = inicio, anterior = null;
@@ -52,7 +55,7 @@ public class Lista {
     /**
      * Busca un nodo en la lista cuya clave sea igual al valor especificado.
      *
-     * @param x valor string que se desea buscar en la lista.
+     * @param x Nombre de usuario que se desea buscar en la lista.
      * @return {@code true} si la clave existe en la lista; {@code false} en caso contrario.
      */
     public boolean busqueda(String x) {
@@ -70,12 +73,19 @@ public class Lista {
      *
      * @return el nodo inicial de la lista, o {@code null} si la lista está vacía.
      */
+    
+    /**
+     * No se usa
+     */
     public NodoLista obtenerInicio() {
         return inicio;
     }
     
+    
     /** 
-     * Devuelve todos los elementos como un arreglo de String 
+     * Devuelve todos los nombres de usuario de la lista como un arreglo de String.
+     * 
+     * @return Un arreglo de String con todos los datos de la lista.
      */
     public String[] obtenerElementos() {
         // Primero contar
@@ -97,7 +107,9 @@ public class Lista {
     }
     
     /** 
-     * Devuelve la cantidad de elementos en la lista 
+     * Devuelve la cantidad de nodos en la lista.
+     * 
+     * @return La cantidad total de nodos.
      */
     public int cantidad() {
         int c = 0;

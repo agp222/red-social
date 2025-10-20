@@ -15,6 +15,12 @@ public class GrafoLA {
     private Lista[] listaAdy;
     private String[] nombres;
 
+    /**
+     * Constructor de la clase GrafoLA.
+     * 
+     * @param n La capacidad máxima inicial de vértices del grafo.
+     * @param d Indica si el grafo es dirigido (true) o no dirigido (false).
+     */
     public GrafoLA(int n, boolean d) {
         this.dirigido = d;
         this.maxNodos = n;
@@ -67,8 +73,8 @@ public class GrafoLA {
     }
 
     /**
-     * Inserta una arista (relación) entre dos vértices.
-     * Si el grafo es no dirigido, se inserta una arista bidireccional.
+     * Inserta una arista entre dos vértices.
+     * Nota: Si el grafo es no dirigido, se inserta una arista bidireccional.
      *
      * @param origen El nombre del vértice de origen.
      * @param destino El nombre del vértice de destino.
@@ -87,8 +93,8 @@ public class GrafoLA {
     }
     
     /**
-     * Elimina una arista (relación) entre dos vértices.
-     * Si el grafo es no dirigido, se elimina la arista bidireccional.
+     * Elimina una arista entre dos vértices.
+     * Nota: Si el grafo es no dirigido, se elimina la arista bidireccional.
      *
      * @param origen El nombre del vértice de origen.
      * @param destino El nombre del vértice de destino.
@@ -115,8 +121,7 @@ public class GrafoLA {
     }
     
     /**
-     * Busca el índice (posición en los arreglos internos) de un vértice dado su nombre.
-     * La búsqueda es sensible a mayúsculas y minúsculas.
+     * Busca el índice (posición en los arreglos internos) de un vértice dado su nombre.    
      *
      * @param nombre El nombre del vértice a buscar.
      * @return El índice del vértice, o -1 si no se encuentra.
@@ -129,8 +134,7 @@ public class GrafoLA {
     }
     
     /**
-     * Muestra por consola la lista de adyacencia completa del grafo,
-     * imprimiendo cada vértice y sus respectivos vecinos.
+     * Muestra por consola la lista de adyacencia completa del grafo, imprimiendo cada vértice y sus respectivos vecinos.
      */
     public void mostrar() {
         for (int i = 0; i < numVertices; i++) {
@@ -143,8 +147,8 @@ public class GrafoLA {
         }
     }
     
-    /**Elimina un vértice del grafo dado su nombre, junto con todas las aristas
-     * que inciden (llegan) o salen de él.
+    /*
+     * Elimina un vértice del grafo dado su nombre, junto con todas las aristas que llegan o salen de él.
      *
      * @param nombre El nombre del vértice a eliminar.
      * @return Un mensaje de confirmación o error.

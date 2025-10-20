@@ -11,13 +11,18 @@ package redsocial;
 
 
 /**
- * Nodo simple enlazado para lista de adyacencia.
- * Guarda un dato tipo String (nombre de usuario).
+ * Representa un nodo en una lista simple enlazada,
  */
 public class NodoLista {
     public String dato;
     public NodoLista siguiente;
-
+    
+    
+    /**
+     * Constructor para crear un nuevo nodo.
+     * * @param x Nombre de usuario
+     * @param s Siguiente nodo.
+     */
     public NodoLista(String x, NodoLista s) {
         dato = x;
         siguiente = s;

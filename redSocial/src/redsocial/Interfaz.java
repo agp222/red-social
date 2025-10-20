@@ -153,10 +153,20 @@ public class Interfaz extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
     private void identificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_identificarActionPerformed
-        // TODO add your handling code here:
+        //Verificar que este el grafo montado
+        if (grafo == null) {
+            JOptionPane.showMessageDialog(null, "Cargue un archivo primero");
+            return;
+        }
     }//GEN-LAST:event_identificarActionPerformed
-
+    
+    
+    /**
+     * Maneja la acción de presionar el botón "Cargar archivo".
+     * Abre un diálogo de selección de archivo para cargar la información, inicial del grafo desde un archivo de texto.
+     */
     private void cargarArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cargarArchivoActionPerformed
         // Se crea el Objeto JFileChooser
         JFileChooser fc = new JFileChooser();
@@ -226,8 +236,13 @@ public class Interfaz extends javax.swing.JFrame {
         
         grafo.mostrar();
     }//GEN-LAST:event_cargarArchivoActionPerformed
-
+    
+    /**
+     * Maneja la acción de presionar el botón "Enlazar".
+     * Agrega una arista entre dos usuarios.
+     */
     private void enlazarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enlazarActionPerformed
+        //Verificar que este el grafo montado
         if (grafo == null){
             JOptionPane.showMessageDialog(null, "Cargue un archivo primero");
             return;
@@ -236,11 +251,13 @@ public class Interfaz extends javax.swing.JFrame {
         String user1 = this.usuario1.getText().toLowerCase();
         String user2 = this.usuario2.getText().toLowerCase();
 
+        //Verificar que los inputs esten llenos
         if (user1.length() < 2 || user2.length() < 2) {
             JOptionPane.showMessageDialog(null, "los inputs deben tener al menos 2 letras");
             return;
         }
         
+        //Enlaza
         grafo.insertarArista(user1, user2);
         
         this.usuario1.setText("");
@@ -249,7 +266,13 @@ public class Interfaz extends javax.swing.JFrame {
         grafo.mostrar();
     }//GEN-LAST:event_enlazarActionPerformed
 
+    
+    /**
+     * Maneja la acción de presionar el botón "Eliminar".
+     * Elimina un usuario del grafo y sus aristas.
+     */
     private void eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarActionPerformed
+        //Verificar que este el grafo montado
         if (grafo == null){
             JOptionPane.showMessageDialog(null, "Cargue un archivo primero");
             return;
@@ -257,46 +280,59 @@ public class Interfaz extends javax.swing.JFrame {
         
         String user = this.inputEliminar.getText().toLowerCase();
 
+        //Verificar que el inputs este lleno
         if (user.length() < 2) {
             JOptionPane.showMessageDialog(null, "los inputs deben tener al menos 2 letras");
             return;
         }
         
+        //Elimina un usuario
         String respuesta = grafo.eliminarVertice(user);
         this.inputEliminar.setText("");
         JOptionPane.showMessageDialog(null, respuesta);
         //grafo.mostrar();
     }//GEN-LAST:event_eliminarActionPerformed
-
+    
+    /**
+     * Maneja la acción de presionar el botón "Agregar".
+     * Inserta un nuevo vértice.
+     */ 
     private void agregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarActionPerformed
+        //Verificar que este el grafo montado
         if (grafo == null){
             JOptionPane.showMessageDialog(null, "Cargue un archivo primero");
             return;
         }
         
         String user = this.inputAgregar.getText().toLowerCase();
-
+        
+        //Verificar que el inputs este lleno
         if (user.length() < 2) {
             JOptionPane.showMessageDialog(null, "los inputs deben tener al menos 2 letras");
             return;
         }
         
+        //Verifica si existe ese usuario ya
         String[] existentes = grafo.getNombres();
         for (int i = 0; i < existentes.length; i++) {
             if (existentes[i].equals(user)) {
-                JOptionPane.showMessageDialog(this,
-                    "El usuario \"" + user + "\" ya existe en el grafo.",
-                    "Duplicado", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this,"El usuario \"" + user + "\" ya existe en el grafo.", "Duplicado", JOptionPane.WARNING_MESSAGE);
                 return;
             }
         }
         
+        //si no existe lo agrega
         grafo.insertarVertice(user);
         this.inputAgregar.setText("");
         JOptionPane.showMessageDialog(null, "Usuario agregado con exito");
     }//GEN-LAST:event_agregarActionPerformed
-
+    
+    /**
+     * Maneja la acción de presionar el botón "Actualizar".
+     * Se usa para guardar la información actual del grafo a un archivo.
+     */
     private void actualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actualizarActionPerformed
+        //Verificar que este el grafo montado
         if (grafo == null){
             JOptionPane.showMessageDialog(null, "Cargue un archivo primero");
             return;
@@ -306,7 +342,8 @@ public class Interfaz extends javax.swing.JFrame {
         fileChooser.setDialogTitle("Guardar grafo como archivo de texto");
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos de texto (*.txt)", "txt");
         fileChooser.setFileFilter(filter);
-
+        
+        // Muestra el diálogo de guardar y captura la opción seleccionada por el usuario.
         int seleccion = fileChooser.showSaveDialog(this);
         if (seleccion == JFileChooser.APPROVE_OPTION) {
             File archivo = fileChooser.getSelectedFile();
@@ -318,7 +355,7 @@ public class Interfaz extends javax.swing.JFrame {
             try (FileWriter fw = new FileWriter(archivo);
                  BufferedWriter bw = new BufferedWriter(fw)) {
 
-                // --- Escribir la sección de usuarios ---
+                // Escribir la sección de usuarios
                 bw.write("usuarios");
                 bw.newLine();
                 for (int i = 0; i < grafo.getNumVertices(); i++) {
@@ -327,13 +364,16 @@ public class Interfaz extends javax.swing.JFrame {
                     bw.newLine();
                 }
 
-                // --- Escribir la sección de relaciones ---
+                // Escribe la sección de relaciones
                 bw.write("relaciones");
                 bw.newLine();
-
+                
+                // Itera sobre cada vértice para revisar sus adyacencias.
                 for (int i = 0; i < grafo.getNumVertices(); i++) {
                     String origen = grafo.getNombres()[i];
                     String[] vecinos = grafo.obtenerVecinos(origen);
+                    
+                    // Itera sobre las adyacencias para escribir las relaciones.
                     for (int j = 0; j < vecinos.length; j++) {
                         bw.write(origen + ", " + vecinos[j]);
                         bw.newLine();
@@ -352,8 +392,13 @@ public class Interfaz extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_actualizarActionPerformed
-
+    
+    /**
+     * Maneja la acción de presionar el botón "Mostrar grafo".
+     * Muestra la visualización gráfica de la red usando la librería GraphStream.
+     */
     private void mostrarGrafoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mostrarGrafoActionPerformed
+        //Verificar que este el grafo montado
         if (grafo == null) {
             JOptionPane.showMessageDialog(null, "Cargue un archivo primero");
             return;
@@ -364,7 +409,7 @@ public class Interfaz extends javax.swing.JFrame {
 
         Graph graph = new SingleGraph("RedSocial");
         
-        
+        //Estilos del grafo
         String styleSheet = "node {size: 25px; fill-color: #66A; text-mode: normal; text-alignment: center; text-color: white; text-size: 11px; text-background-mode: rounded-box; text-background-color: #444; text-padding: 3px, 2px; text-offset: 0px, -15px;}"+
                 "edge {fill-color: #777; arrow-shape: arrow; arrow-size: 8px, 4px; text-mode: normal;}";
         graph.setAttribute("ui.stylesheet", styleSheet);
